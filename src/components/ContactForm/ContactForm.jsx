@@ -5,6 +5,9 @@ import "yup-phone";
 import { useId } from 'react';
 import css from './ContactForm.module.css'
 
+import { useDispatch } from "react-redux";
+import { addContact } from '../../redux/contactsSlice';
+
 const initialValues = {
     name: "",
     number:"",
@@ -16,9 +19,12 @@ const validationSchema = Yup.object().shape({
     number: Yup.string().required("Phone number is a required field!").matches(phoneRegExp, 'Not valid phone number!'),
 });
 
-export default function ContactForm({onAdd}) {
+export default function ContactForm() {
+    
+     const dispatch = useDispatch();
+
     const handleSubmit = (values, actions) => {
-        onAdd({ id: nanoid(), name: values.name, number: values.number});
+        dispatch(addContact({ id: nanoid(), name: values.name, number: values.number}));
 		actions.resetForm(initialValues);
     };
     
